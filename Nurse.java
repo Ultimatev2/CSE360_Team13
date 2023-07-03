@@ -38,7 +38,7 @@ public class Nurse extends Application {
         mainPane.setAlignment(Pos.CENTER);
         mainPane.setVgap(10);
         mainPane.setHgap(10);
-        mainPane.setPadding(new Insets(10));
+        mainPane.setPadding(new Insets(20));
 
         primaryStage.setTitle("Nurse's View");
 
@@ -127,7 +127,7 @@ public class Nurse extends Application {
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setVgap(10);
         gridPane.setHgap(10);
-        gridPane.setPadding(new Insets(10));
+        gridPane.setPadding(new Insets(20));
 
         whichPatientStage.setTitle("Nurse: Patient Portal Message");
         Label patientNameLabel = new Label("Patient:");
@@ -158,7 +158,7 @@ public class Nurse extends Application {
         mainPane.setAlignment(Pos.CENTER);
         mainPane.setVgap(10);
         mainPane.setHgap(10);
-        mainPane.setPadding(new Insets(10));
+        mainPane.setPadding(new Insets(20));
 
         messagingStage.setTitle("Nurse: Patient Portal Message");
         Label patientNameLabel = new Label("Patient: "+name);
@@ -210,7 +210,7 @@ public class Nurse extends Application {
         mainPane.setAlignment(Pos.CENTER);
         mainPane.setVgap(10);
         mainPane.setHgap(10);
-        mainPane.setPadding(new Insets(10));
+        mainPane.setPadding(new Insets(20));
 
         secondStage.setTitle("Nurse's View: Patient History");
 
