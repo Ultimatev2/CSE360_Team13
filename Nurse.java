@@ -225,54 +225,58 @@ public class Nurse extends Application {
         Label helloLabel = new Label("Hello, nurse");
         Label patientNameLabel = new Label(name+"'s Medical History");
 
-        Label previousHealthIssues = new Label("Previous Health Issues");
-        Label prescribedMedications = new Label("Previously Prescribed Medications");
-        Label historyImmunization = new Label("History of Immunization");
+//        Label previousHealthIssues = new Label("Previous Health Issues");
+//        Label prescribedMedications = new Label("Previously Prescribed Medications");
+//        Label historyImmunization = new Label("History of Immunization");
 
         mainPane.add(messageButton, 0, 0);
         mainPane.add(logoutButton, 3, 1);
         mainPane.add(helloLabel, 3, 0);
 
         mainPane.add(patientNameLabel, 1, 0);
-        mainPane.add(previousHealthIssues, 0, 2);
-        mainPane.add(prescribedMedications, 1, 2);
-        mainPane.add(historyImmunization, 2, 2);
+//        mainPane.add(previousHealthIssues, 0, 2);
+//        mainPane.add(prescribedMedications, 1, 2);
+//        mainPane.add(historyImmunization, 2, 2);
 
         // textareas
-        TextArea previousHealthIssuesTextArea = new TextArea();
-        TextArea prescribedMedicationsTextArea = new TextArea();
-        TextArea historyImmunizationTextArea = new TextArea();
+        TextArea patientHealthHistoryTextArea = new TextArea();
+//        TextArea previousHealthIssuesTextArea = new TextArea();
+//        TextArea prescribedMedicationsTextArea = new TextArea();
+//        TextArea historyImmunizationTextArea = new TextArea();
 
-        previousHealthIssuesTextArea.setText("non");
-        prescribedMedicationsTextArea.setText("non");
-        historyImmunizationTextArea.setText("non");
+        patientHealthHistoryTextArea.setText("non");
+//        previousHealthIssuesTextArea.setText("non");
+//        prescribedMedicationsTextArea.setText("non");
+//        historyImmunizationTextArea.setText("non");
 
-        previousHealthIssuesTextArea.setPrefHeight(120);
-        previousHealthIssuesTextArea.setPrefWidth(200);
-        prescribedMedicationsTextArea.setPrefHeight(120);
-        prescribedMedicationsTextArea.setPrefWidth(200);
-        historyImmunizationTextArea.setPrefHeight(120);
-        historyImmunizationTextArea.setPrefWidth(200);
+        patientHealthHistoryTextArea.setPrefHeight(200);
+        patientHealthHistoryTextArea.setPrefWidth(200);
+//        previousHealthIssuesTextArea.setPrefHeight(120);
+//        previousHealthIssuesTextArea.setPrefWidth(200);
+//        prescribedMedicationsTextArea.setPrefHeight(120);
+//        prescribedMedicationsTextArea.setPrefWidth(200);
+//        historyImmunizationTextArea.setPrefHeight(120);
+//        historyImmunizationTextArea.setPrefWidth(200);
 
-        mainPane.add(previousHealthIssuesTextArea, 0, 3);
-        mainPane.add(prescribedMedicationsTextArea, 1, 3);
-        mainPane.add(historyImmunizationTextArea, 2, 3);
-
+        loadPatientHistory(name, patientHealthHistoryTextArea);
 //        loadPatientHistory(name+"_visit.txt", previousHealthIssuesTextArea);
 //        loadPatientHistory(name+"_visit.txt", prescribedMedicationsTextArea);
 //        loadPatientHistory(name+"_visit.txt", historyImmunizationTextArea);
 
+        mainPane.add(patientHealthHistoryTextArea, 1, 3);
+//        mainPane.add(previousHealthIssuesTextArea, 0, 3);
+//        mainPane.add(prescribedMedicationsTextArea, 1, 3);
+//        mainPane.add(historyImmunizationTextArea, 2, 3);
 
-        // create the scene
         Scene scene = new Scene(mainPane);
         secondStage.setScene(scene);
-        secondStage.show();    // show stage
+        secondStage.show();
     }
-    private void loadPatientHistory(String patientFileName, TextArea textArea) {
+    private void loadPatientHistory(String name, TextArea textArea) {
         try {
-            Scanner scanner = new Scanner(new File(patientFileName));
+            Scanner scanner = new Scanner(new File(name+"_visit.txt"));
             StringBuilder historyContent = new StringBuilder();
-            String patientHistory;
+//            String patientHistory;
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 historyContent.append(line).append("\n");
