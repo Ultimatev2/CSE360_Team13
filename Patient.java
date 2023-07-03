@@ -1,4 +1,4 @@
-package test;
+package application;
 
 public class Patient {
 public String firstName;

@@ -1,4 +1,4 @@
-package com.example.cse360;
+package application;
 
 import javafx.application.*;
 import javafx.geometry.*;
@@ -86,7 +86,7 @@ public class Nurse extends Application {
 
 
         messageButton.setOnAction(event -> messageWho());
-//        logoutButton.setOnAction(event -> logout(primaryStage));  //primaryStage.close();
+        logoutButton.setOnAction(event -> logout(primaryStage));  
         continueButton.setOnAction(event -> {
             nameText = nameTextField.getText();
             dobText = dobTextField.getText();
@@ -216,11 +216,11 @@ public class Nurse extends Application {
 
         // buttons, labels
         Button messageButton = new Button("Patient\nPortal\nMessage");
-        Button logoutButton = new Button("Logout");
-
+        Button logoutButton = new Button("Close");
+        logoutButton.setOnAction(e -> secondStage.close());
         messageButton.setStyle("-fx-background-color: lavender;");
         messageButton.setOnAction(event -> messagePatient(name));
-//        logoutButton.setOnAction(event -> logout(secondStage));
+
 
         Label helloLabel = new Label("Hello, nurse");
         Label patientNameLabel = new Label(name+"'s Medical History");
@@ -315,7 +315,8 @@ public class Nurse extends Application {
         stage.show();
     }
     private void logout(Stage stage) {
-        stage.close();
+        Main home = new Main();
+        home.start(stage);
         //go to main page
     }
 
