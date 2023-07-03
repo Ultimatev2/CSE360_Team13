@@ -1,4 +1,4 @@
-package test;
+package application;
 
 import java.io.*;
 import java.util.Scanner;
@@ -68,7 +68,7 @@ public class PatientMenu extends Application
 		Button logIn = new Button("Log In");
 		logIn.setOnAction(event -> {
 			try {
-				loginAttempt(userinput.getText(), passinput.getText());
+				loginAttempt(userinput.getText(), passinput.getText(), stage);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -242,6 +242,7 @@ public class PatientMenu extends Application
 		pedit.setTranslateY(25);
 
 		Button signout = new Button("Sign Out");
+		signout.setOnAction(e -> newStage.close());
 		accInf.getChildren().add(signout);
 		StackPane.setAlignment(signout, Pos.TOP_LEFT);
 		signout.setTranslateX(50);
@@ -300,7 +301,7 @@ public class PatientMenu extends Application
 
 	}
 
-	private void loginAttempt(String first, String last) throws IOException
+	private void loginAttempt(String first, String last, Stage primStage) throws IOException
 	{
 		Stage stage = new Stage();
 		StackPane pane = new StackPane();
@@ -310,6 +311,7 @@ public class PatientMenu extends Application
 			{
 				if(patients[i] != null && patients[i].lastName.equals(last))
 				{
+					primStage.close();
 					patientMenu(patients[i], stage);
 					return;
 				}
@@ -373,7 +375,7 @@ public class PatientMenu extends Application
 		passinput.setMinWidth(100);
 
 		Button logIn = new Button("Create Account");
-		logIn.setOnAction(event -> newUser(userinput.getText(), passinput.getText()));
+		logIn.setOnAction(event -> newUser(userinput.getText(), passinput.getText(), stage));
 		pane.getChildren().add(logIn);
 		StackPane.setAlignment(logIn, Pos.TOP_LEFT);
 		logIn.setTranslateX(270);
@@ -383,8 +385,9 @@ public class PatientMenu extends Application
 		stage.setScene(scene);
 		stage.show();
 	}
-	private void newUser(String user, String pass)
+	private void newUser(String user, String pass, Stage primaryStage)
 	{
+		primaryStage.close();
 		Stage stage = new Stage();
 		StackPane pane = new StackPane();
 		String firstName = user;
