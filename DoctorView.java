@@ -172,14 +172,14 @@ public void start(Stage primaryStage) throws Exception {
 		    	}
 		    	
 		    	if (sympdiag.isEmpty()) {
-		    		diagnosis = "Symptom not found";
+		    		this.diagnosis = "Symptom not found";
 		    	} 
 		    	else {
-		    		diagnosis = String.join("\n", sympdiag);
+		    		this.diagnosis = String.join("\n", sympdiag);
 		    	}
 		    	 } 
 		    	 else {
-		    		 diagnosis = "No symptoms selected";
+		    		 this.diagnosis = "No symptoms selected";
 		    	 }
 		    	 		    	 
 		    	 //Clear symptom choices
