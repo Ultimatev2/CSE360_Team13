@@ -22,6 +22,10 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.File;
 
 public class DoctorView extends Application {
 
@@ -32,7 +36,7 @@ public class DoctorView extends Application {
  	private TextArea subjectText;
  	
  	private CheckBox s1,s2,s3,s4,s5,s6,s7,s8,s9,s10;
- 	private Button b1,b2,b3,b4,b5;
+ 	private Button b1,b2,b3,b4,b5,b6;
 
  	
 	public static void main(String[] args) {
@@ -48,7 +52,7 @@ public void start(Stage primaryStage) throws Exception {
 		     HBox helloLay = new HBox(helloLabel);
 		     helloLay.setAlignment(Pos.TOP_LEFT);
 		     
-		     //Buttons
+ //Buttons
 		     b1 = new Button("Diagnose");
 		     b2 = new Button("Create Treatment Plan");
 		     b3 = new Button("Send Message");
@@ -75,11 +79,7 @@ public void start(Stage primaryStage) throws Exception {
 		     HBox patLay = new HBox(patientHeader);
 		     patLay.setAlignment(Pos.TOP_CENTER);
 		     //Patient TextArea
-		     TextArea patientText = new TextArea(
-		    		   "Patient ID: PD2023-789\n"
-		    		 + "Name: \n"
-		    		 + "DOB: n"
-		    		 + "Contact Info: " );
+		     TextArea patientText = new TextArea();
 		     patientText.setEditable(false);
 		     patientBox.getChildren().addAll(patLay,patientText);
 		     
@@ -315,9 +315,6 @@ public void start(Stage primaryStage) throws Exception {
 		     	alert.setHeaderText(null);
 		     	alert.setContentText("Message Sent!");
 		     	alert.showAndWait();
-		    	
-		     	 String subject = subjectText.getText();
-		     	 String message = messageText.getText();
 		     	
 		     	recepientText.clear();
 		     	subjectText.clear();
@@ -325,7 +322,7 @@ public void start(Stage primaryStage) throws Exception {
 		     });
 		     
 		     //Patient Data Entry
-		     
+		  
 		     //Labels
 		     Label firstName = new Label("First Name: ");
 		     Label lastName = new Label("Last Name: ");
@@ -344,17 +341,34 @@ public void start(Stage primaryStage) throws Exception {
 		     LnameTextArea.setPrefRowCount(1);
 		     HBox lastNameBox = new HBox(lastName,LnameTextArea);
 		     lastNameBox.setAlignment(Pos.CENTER_LEFT);
-
-		     nameBox.getChildren().addAll(firstNameBox,lastNameBox);
+		     
+		     
+		     //Patient Name Button
+		     b6 = new Button("Save Name");
+		     b6.setStyle(buttonStyle);
+		     b6.setOnAction(e-> {
+		    	 String first = FnameTextArea.getText().trim();
+		    	 String last = LnameTextArea.getText().trim();
+		    	 String patName = first + " " + last;
+		    	 displayPatientHistory(patName,patientText);
+		     });
+		     
+		     VBox saveNameBox = new VBox(b6);
+		     nameBox.getChildren().addAll(firstNameBox,lastNameBox,saveNameBox);
 		     nameBox.setMaxWidth(150);
 		     nameBox.setMaxHeight(150);
 		     nameBox.setSpacing(3);
 		     
+
+		     
 		     //Save and Exit Button
-		     b5.setOnAction(e-> 
-		     {
-		    	 Main home = new Main();
-		    	 home.start(primaryStage);
+		     b5.setOnAction(e-> {
+		    	 String firstN = FnameTextArea.getText().trim();
+		    	 String lastN = LnameTextArea.getText().trim();
+		    	 String patientsName = firstN + " " + lastN;
+		    	 
+		    	 saveInfo(patientsName,diagnosisTextArea.getText(), diagnosis, subjectText.getText(), messageText.getText(), treatTextArea.getText());
+		    	 primaryStage.close();
 		     });
 		     
 		     messageBox.getChildren().addAll(messageLay,recepientBox,subjectBox,messageTextBox,buttonBox);
@@ -368,8 +382,6 @@ public void start(Stage primaryStage) throws Exception {
 		     
 		      //Main Layout  
 		      GridPane mainLayout = new GridPane();
-		     // mainLayout.setStyle("-fx-background-color : transparent;");
-		      
 		      mainLayout.setPadding(new Insets(10));			      
 		      //mainLayout.setAlignment(Pos.TOP_CENTER);
 		      mainLayout.setHgap(5);
@@ -384,7 +396,7 @@ public void start(Stage primaryStage) throws Exception {
 		      mainLayout.add(saveExitBox, 18, 20);
 		      mainLayout.add(helloLay, 0, 5);
 		      mainLayout.add(nameBox, 0, 8);
-		      Scene scene = new Scene(mainLayout,1024,768,Color.DARKCYAN);
+		      Scene scene = new Scene(mainLayout, 1000, 1000);
 
 		       // Set the stage
 		      primaryStage.setTitle("Doctor's View");
@@ -466,20 +478,59 @@ private static void saveInfo(String patientName, String symptoms, String diagnos
 	String [] name = patientName.split(" ");
 	String firstName = name[0];
 	String lastName = name[1];
-	String fileName = firstName + lastName + "_visits.txt";
+	String fileName = patientName + "_visit.txt";
 	
-	BufferedWriter br = null;
+	FileWriter fw = null;
 	try {
-	    br = new BufferedWriter(new FileWriter(fileName,true));
-		br.newLine();
-		br.write("Patient Name: " + patientName + "\n");
-		br.write("Symptoms: " + symptoms + "\n");
-		br.write("Diagnosis: " + diagnosis + "\n");
-		br.write("Treatment Plan: " + treatmentPlan + "\n");
-		br.write("Subject: " + subject + "\n" + message + "\n");
-		br.flush();
+		fw = new FileWriter(fileName,true);
+        fw.write("\nSymptoms: " + symptom + "\n");
+        fw.write("Diagnosis: " + diagnosis + "\n");
+        fw.write("Treatment Plan: " + treatmentPlan + "\n");
+        fw.write("Subject: " + subject + "\n" + message + "\n");
+        fw.flush();
+        System.out.println("Information saved successfully.");
 	} catch (IOException e) {
-		System.err.println("An error occured while saving the information: " + e.getMessage());
-	}	
+        System.err.println("An error occurred while saving the information: " + e.getMessage());
+		}
+	finally {
+		if (fw != null) {
+			try {
+				fw.close();
+			} catch (IOException e) {
+			    System.err.println("An error occurred while closing the file: " + e.getMessage());
+				}
+			}
+		}
+	}
+private void displayPatientHistory(String name, TextArea patientTextBox) {
+	try {
+		String fileName = name + "_visits.txt";
+		File patientHistory = new File(fileName);
+		
+		if (patientHistory.exists()) {
+			Scanner scnr = new Scanner(patientHistory);
+			StringBuilder ph = new StringBuilder();
+			
+			while (scnr.hasNextLine()) {
+				String line = scnr.nextLine();
+				ph.append(line).append("\n");
+			}
+			patientTextBox.setText(ph.toString());
+			scnr.close();
+		}
+		else {
+			ErrorMessage("Patient history not found");
+		}
+	} catch (FileNotFoundException e) {
+		ErrorMessage("An error has occured while loading the patient history: " + e.getMessage());
+	}
+}
+private void ErrorMessage(String message) {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
 }
 }
+
