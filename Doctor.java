@@ -43,7 +43,7 @@ public class Doctor extends Application {
     private TextArea subjectText;
 
     private CheckBox s1,s2,s3,s4,s5,s6,s7,s8,s9,s10;
-    private Button b1,b2,b5,b6;
+    private Button b1,b2,b3,b5,b6;
 
 
     public static void main(String[] args) {
@@ -62,7 +62,8 @@ public class Doctor extends Application {
             //Buttons
             b1 = new Button("Diagnose");
             b2 = new Button("Create Treatment Plan");
-            b5 = new Button("Save and Exit");
+            b5 = new Button("Save");
+            b3 = new Button("Exit");
 
             String buttonStyle = "-fx-background-color: lightblue;";
             b1.setStyle(buttonStyle);
@@ -292,24 +293,28 @@ public class Doctor extends Application {
             nameBox.setMaxHeight(150);
             nameBox.setSpacing(3);
 
-
-
+            b3.setOnAction(e-> {
+            Main home = new Main();
+            home.start(primaryStage);
+            });
+            
+            b3.setStyle(buttonStyle);
             //Save and Exit Button
             b5.setOnAction(e-> {
-                String firstN = FnameTextArea.getText().trim();
+            	String firstN = FnameTextArea.getText().trim();
                 String lastN = LnameTextArea.getText().trim();
                 String patientsName = firstN + " " + lastN;
 
-                saveInfo(patientsName, symptoms, diagnosis, subjectText.getText(), messageText.getText(), treatTextArea.getText());
-                primaryStage.close();
+                saveInfo(patientsName, symptoms, diagnosis, subjectText.getText(), messageText.getText(), treatTextArea.getText());               
             });
            
             //Save and Exit Button
-            VBox saveExitBox = new VBox();
+            HBox saveExitBox = new HBox();
             saveExitBox.setAlignment(Pos.BOTTOM_RIGHT);
             saveExitBox.setSpacing(10);
-            saveExitBox.setPadding(new Insets(30));
+            saveExitBox.setPadding(new Insets(10));
             saveExitBox.getChildren().add(b5);
+            saveExitBox.getChildren().add(b3);
 
             //Patient Portal Messages
             Button patientMessageButton = new Button("Patient Portal Messages");
@@ -330,12 +335,12 @@ public class Doctor extends Application {
             mainLayout.setVgap(5);
 
 
-            mainLayout.add(patientMessageBox,18,13);
+            mainLayout.add(patientMessageBox,10,11);
             mainLayout.add(symptomBox, 0, 10);
             mainLayout.add(diagnosisBox,10,10);
             mainLayout.add(treatBox, 18, 8);
             mainLayout.add(patientBox, 10, 8);
-            mainLayout.add(saveExitBox, 18, 20);
+            mainLayout.add(saveExitBox, 18, 11);
             mainLayout.add(helloLay, 0, 5);
             mainLayout.add(nameBox, 0, 8);
             Scene scene = new Scene(mainLayout, 800, 900);
