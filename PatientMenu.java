@@ -231,16 +231,6 @@ public class PatientMenu extends Application
 		StackPane.setAlignment(pword, Pos.TOP_LEFT);
 		pword.setTranslateY(25);
 
-		Button uedit = new Button("Edit");
-		accInf.getChildren().add(uedit);
-		StackPane.setAlignment(uedit, Pos.TOP_LEFT);
-		uedit.setTranslateX(150);
-		Button pedit = new Button("Edit");
-		accInf.getChildren().add(pedit);
-		StackPane.setAlignment(pedit, Pos.TOP_LEFT);
-		pedit.setTranslateX(150);
-		pedit.setTranslateY(25);
-
 		Button signout = new Button("Sign Out");
 		signout.setOnAction(e -> newStage.close());
 		accInf.getChildren().add(signout);
