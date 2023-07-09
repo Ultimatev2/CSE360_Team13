@@ -1,4 +1,4 @@
-package com.example.cse360project;
+package com.example.cse360project;;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -23,6 +23,14 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.File;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import javafx.scene.control.Button;
+import javafx.scene.Scene;
+
 
 
 public class Doctor extends Application {
@@ -35,7 +43,7 @@ public class Doctor extends Application {
     private TextArea subjectText;
 
     private CheckBox s1,s2,s3,s4,s5,s6,s7,s8,s9,s10;
-    private Button b1,b2,b3,b4,b5,b6;
+    private Button b1,b2,b5,b6;
 
 
     public static void main(String[] args) {
@@ -54,15 +62,11 @@ public class Doctor extends Application {
             //Buttons
             b1 = new Button("Diagnose");
             b2 = new Button("Create Treatment Plan");
-            b3 = new Button("Send Message");
-            b4 = new Button("Cancel Message");
             b5 = new Button("Save and Exit");
 
             String buttonStyle = "-fx-background-color: lightblue;";
             b1.setStyle(buttonStyle);
             b2.setStyle(buttonStyle);
-            b3.setStyle(buttonStyle);
-            b4.setStyle(buttonStyle);
             b5.setStyle(buttonStyle);
 
             //PATIENT INFORMATION SECTION
@@ -251,76 +255,6 @@ public class Doctor extends Application {
                 diagnosisTextArea.setText("");
             });
 
-
-
-            //SEND MESSAGE SECTION
-            VBox messageBox = new VBox();
-            messageBox.setSpacing(10);
-            messageBox.setPadding(new Insets(10));
-            messageBox.setStyle("-fx-border-color: lightblue; -fx-border-width: 1px;");
-            messageBox.setMaxWidth(400);
-            messageBox.setMaxHeight(300);
-
-            //Send Message Header
-            Label messageHeader = new Label("Send Message");
-            messageHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 20px; -fx-underline: true;");
-            HBox messageLay = new HBox(messageHeader);
-            messageLay.setAlignment(Pos.TOP_CENTER);
-
-
-            //Recipient Area
-            Label recepientLabel = new Label("To:            ");
-            TextArea recepientText = new TextArea();
-            recepientText.setPrefRowCount(1);
-            recepientText.setMaxWidth(300);
-            HBox recepientBox = new HBox(recepientLabel, recepientText);
-            recepientText.setPrefRowCount(1);
-
-            //Subject Area
-            Label subjectLabel = new Label("Subject:    ");
-            subjectText = new TextArea();
-            subjectText.setPrefRowCount(1);
-            subjectText.setMaxWidth(300);
-            HBox subjectBox = new HBox(subjectLabel,subjectText);
-
-            //Message Area
-            Label messageLabel = new Label("Message: ");
-            messageText = new TextArea();
-            messageText.setPrefColumnCount(50);
-            messageText.setPrefRowCount(5);
-            messageText.setWrapText(true);
-            messageText.setMaxWidth(300);
-            HBox messageTextBox = new HBox(messageLabel,messageText);
-
-            messageTextBox.setSpacing(5);
-
-
-
-            //Buttons
-            HBox buttonBox = new HBox(b4,b3);
-            buttonBox.setSpacing(150);
-
-
-            //Cancel Message
-            b4.setOnAction(e-> {
-                recepientText.clear();
-                subjectText.clear();
-                messageText.clear();
-            });
-
-            //Send Message
-            b3.setOnAction(e-> {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Message Sent");
-                alert.setHeaderText(null);
-                alert.setContentText("Message Sent!");
-                alert.showAndWait();
-
-                recepientText.clear();
-                subjectText.clear();
-                messageText.clear();
-            });
-
             //Patient Data Entry
 
             //Labels
@@ -341,10 +275,9 @@ public class Doctor extends Application {
             LnameTextArea.setPrefRowCount(1);
             HBox lastNameBox = new HBox(lastName,LnameTextArea);
             lastNameBox.setAlignment(Pos.CENTER_LEFT);
-
-
+            
             //Patient Name Button
-            b6 = new Button("Save Name");
+            b6 = new Button("Enter Name");
             b6.setStyle(buttonStyle);
             b6.setOnAction(e-> {
                 String first = FnameTextArea.getText().trim();
@@ -370,8 +303,7 @@ public class Doctor extends Application {
                 saveInfo(patientsName, symptoms, diagnosis, subjectText.getText(), messageText.getText(), treatTextArea.getText());
                 primaryStage.close();
             });
-
-            messageBox.getChildren().addAll(messageLay,recepientBox,subjectBox,messageTextBox,buttonBox);
+           
             //Save and Exit Button
             VBox saveExitBox = new VBox();
             saveExitBox.setAlignment(Pos.BOTTOM_RIGHT);
@@ -379,6 +311,16 @@ public class Doctor extends Application {
             saveExitBox.setPadding(new Insets(30));
             saveExitBox.getChildren().add(b5);
 
+            //Patient Portal Messages
+            Button patientMessageButton = new Button("Patient Portal Messages");
+            patientMessageButton.setStyle("-fx-font-size: 14px;-fx-background-color: lightblue;");
+            patientMessageButton.setOnAction(e-> {
+            	messageWho();
+            });
+            
+            VBox patientMessageBox = new VBox(patientMessageButton);
+            
+            
 
             //Main Layout
             GridPane mainLayout = new GridPane();
@@ -388,15 +330,15 @@ public class Doctor extends Application {
             mainLayout.setVgap(5);
 
 
-            mainLayout.add(messageBox,10,10);
+            mainLayout.add(patientMessageBox,18,13);
             mainLayout.add(symptomBox, 0, 10);
-            mainLayout.add(diagnosisBox,18,10);
+            mainLayout.add(diagnosisBox,10,10);
             mainLayout.add(treatBox, 18, 8);
             mainLayout.add(patientBox, 10, 8);
             mainLayout.add(saveExitBox, 18, 20);
             mainLayout.add(helloLay, 0, 5);
             mainLayout.add(nameBox, 0, 8);
-            Scene scene = new Scene(mainLayout, 1000, 1000);
+            Scene scene = new Scene(mainLayout, 800, 900);
 
             // Set the stage
             primaryStage.setTitle("Doctor's View");
@@ -514,6 +456,96 @@ public class Doctor extends Application {
             }
         } catch (FileNotFoundException e) {
             ErrorMessage("An error has occured while loading the patient history: " + e.getMessage());
+        }
+    }
+    private void messageWho() {
+        // Popup page asking which patient to message
+        Stage whichPatientStage = new Stage();
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setPadding(new Insets(20));
+
+        whichPatientStage.setTitle("Doctor: Patient Portal Message");
+        Label patientNameLabel = new Label("Patient:");
+        TextField patientNameTextField = new TextField();
+        Button okButton = new Button("Ok");
+        
+        okButton.setStyle("-fx-background-color: lightblue;");
+        gridPane.add(patientNameLabel,0,0);
+        gridPane.add(patientNameTextField,1,0);
+        gridPane.add(okButton,0,1);
+        Scene scene = new Scene(gridPane);
+        whichPatientStage.setScene(scene);
+        whichPatientStage.show();
+
+        okButton.setOnAction(e ->{
+            String name = patientNameTextField.getText();
+            Path path = Paths.get(name+"_messages.txt");
+            if(!Files.exists(path)) {
+                ErrorMessage("Invalid patient.\n");
+            } else {
+                messagePatient(name);
+                whichPatientStage.close();
+            }
+        });
+    }    
+    private void messagePatient(String name) {
+        // go to patient portal message page
+        Stage messagingStage = new Stage();
+        BorderPane mainPane = new BorderPane();
+        mainPane.setPadding(new Insets(20));
+        
+        
+        messagingStage.setTitle("Doctor: Patient Portal Message");
+        Label patientNameLabel = new Label("Patient: " + name);
+        TextArea messageTextArea = new TextArea();
+        Button sendMessageButton = new Button("Send");
+        sendMessageButton.setStyle("-fx-background-color: lightblue;");
+
+        try {
+            Scanner scanner = new Scanner(new File(name+"_messages.txt"));
+            StringBuilder fileContent = new StringBuilder();
+           
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                fileContent.append(line).append("\n");
+            }
+            messageTextArea.setText(fileContent.toString());
+            scanner.close();
+
+            Scene scene = new Scene(mainPane, 300, 200);
+            messagingStage.setScene(scene);
+            messagingStage.show();
+
+        } catch (FileNotFoundException e) {
+            ErrorMessage("No patient with the \nfollowing name found.");
+//            e.printStackTrace();
+        }
+        
+        mainPane.setTop(patientNameLabel);
+        mainPane.setCenter(messageTextArea);
+        mainPane.setBottom(sendMessageButton);
+
+        Scene scene = new Scene(mainPane, 300, 200);
+        messagingStage.setScene(scene);
+        messagingStage.show();
+
+        sendMessageButton.setOnAction(event-> {
+            String message = messageTextArea.getText();
+            updateMessageFile(name, message);
+            messagingStage.close();
+        });
+    }
+    
+    private void updateMessageFile(String name, String message) {
+    	try {
+            FileWriter fw = new FileWriter(name + "_messages.txt", true);
+            fw.write(message + "\n");
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     private void ErrorMessage(String message) {
