@@ -504,7 +504,7 @@ private static void saveInfo(String patientName, String symptoms, String diagnos
 	}
 private void displayPatientHistory(String name, TextArea patientTextBox) {
 	try {
-		String fileName = name + "_visits.txt";
+		String fileName = name + "_visit.txt";
 		File patientHistory = new File(fileName);
 		
 		if (patientHistory.exists()) {
