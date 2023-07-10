@@ -411,21 +411,16 @@ public class Doctor extends Application {
 
         return treatmentPlan;
     }
-
+    //Save Doctors notes to patient file
     private static void saveInfo(String patientName, String symptoms, String diagnosis,String treatmentPlan){
-//        String [] name = patientName.split(" ");
-//        String firstName = name[0];
-//        String lastName = name[1];
         String fileName = patientName + "_visit.txt";
 
         FileWriter fw = null;
         try {
             fw = new FileWriter(fileName,true);
-//            fw.write("Patient Name: " + patientName + "\n");
             fw.write("\nSymptoms: " + symptoms + "\n");
             fw.write("Diagnosis: " + diagnosis + "\n");
             fw.write("Treatment Plan: " + treatmentPlan + "\n");
-//            fw.write("Subject: " + subject + "\n" + message + "\n");
             fw.flush();
             System.out.println("Information saved successfully.");
         } catch (IOException e) {
@@ -441,6 +436,7 @@ public class Doctor extends Application {
             }
         }
     }
+    //Display patient history in patient box
     private void displayPatientHistory(String name, TextArea patientTextBox) {
         try {
             String fileName = name + "_visit.txt";
@@ -499,6 +495,7 @@ public class Doctor extends Application {
             }
         });
     }    
+    //Send Messages to patient
     private void messagePatient(String name) {
         // go to patient portal message page
         Stage messagingStage = new Stage();
@@ -556,7 +553,7 @@ public class Doctor extends Application {
 
 
     }
-    
+    //Updates Messages
     private void updateMessageFile(String name, String message) {
     	try {
             FileWriter fw = new FileWriter(name + "_messages.txt", true);
@@ -566,6 +563,7 @@ public class Doctor extends Application {
             e.printStackTrace();
         }
     }
+    //Error Message
     private void ErrorMessage(String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
