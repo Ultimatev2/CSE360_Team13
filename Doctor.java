@@ -1,6 +1,7 @@
-package com.example.cse360project;
+package  com.example.cse360project;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -305,7 +306,7 @@ public class Doctor extends Application {
                 String lastN = LnameTextArea.getText().trim();
                 String patientsName = firstN + " " + lastN;
 
-                saveInfo(patientsName, symptoms, diagnosis, subjectText.getText(), messageText.getText(), treatTextArea.getText());               
+                saveInfo(patientsName, symptoms, diagnosis,treatTextArea.getText());               
             });
            
             //Save and Exit Button
@@ -411,7 +412,7 @@ public class Doctor extends Application {
         return treatmentPlan;
     }
 
-    private static void saveInfo(String patientName, String symptoms, String diagnosis,String subject, String message, String treatmentPlan){
+    private static void saveInfo(String patientName, String symptoms, String diagnosis,String treatmentPlan){
 //        String [] name = patientName.split(" ");
 //        String firstName = name[0];
 //        String lastName = name[1];
@@ -487,12 +488,14 @@ public class Doctor extends Application {
 
         okButton.setOnAction(e ->{
             String name = patientNameTextField.getText();
+            patientNameTextField.clear();
+            whichPatientStage.hide();
+            
             Path path = Paths.get(name+"_messages.txt");
             if(!Files.exists(path)) {
                 ErrorMessage("Invalid patient.\n");
             } else {
                 messagePatient(name);
-                whichPatientStage.close();
             }
         });
     }    
@@ -508,7 +511,18 @@ public class Doctor extends Application {
         TextArea messageTextArea = new TextArea();
         Button sendMessageButton = new Button("Send");
         sendMessageButton.setStyle("-fx-background-color: lightblue;");
-
+        
+        Button closeButton = new Button("Close");
+        closeButton.setStyle("-fx-background-color: lightblue;");
+        sendMessageButton.setOnAction(event-> {
+            String message = messageTextArea.getText();
+            updateMessageFile(name, message);
+        });
+        
+        closeButton.setOnAction(event-> {
+        	messagingStage.hide();
+        });
+        
         try {
             Scanner scanner = new Scanner(new File(name+"_messages.txt"));
             StringBuilder fileContent = new StringBuilder();
@@ -529,19 +543,18 @@ public class Doctor extends Application {
 //            e.printStackTrace();
         }
         
+        HBox buttons = new HBox(sendMessageButton,closeButton);
+        buttons.setSpacing(10);
+        
         mainPane.setTop(patientNameLabel);
         mainPane.setCenter(messageTextArea);
-        mainPane.setBottom(sendMessageButton);
+        mainPane.setBottom(buttons);
 
         Scene scene = new Scene(mainPane, 300, 200);
         messagingStage.setScene(scene);
         messagingStage.show();
 
-        sendMessageButton.setOnAction(event-> {
-            String message = messageTextArea.getText();
-            updateMessageFile(name, message);
-            messagingStage.close();
-        });
+
     }
     
     private void updateMessageFile(String name, String message) {
